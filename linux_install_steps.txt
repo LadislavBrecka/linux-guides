@@ -1,0 +1,57 @@
+Instalacia POP : 
+
+1. Napalim si POP na USB. Pouijem Etcher. Momentalne mam POP na magnetickom 8 GB kluci.
+
+2. V BIOSe (del klavesa pri nabiehani) musim vypnut Fast Boot, Secure Boot, UEFI mode only nastavit (nie legacy/CSM) (obr. 2,3)
+   Dalej v BIOSe musim zvolit Boot Priority, musim dat ako prve USB: (obr. 1)
+	Fixed Boot priority - Boot option #1  USB Hard Disk (potom nezabudnut prehodit nazad)
+			      Boot option #2  Hard Disk
+
+3. Vlozime kluc,restartujeme, malo by sa zacat bootovat z USB ak je dobre nastavena priorita, ak nie treba sa pohrat, treba vybrat ine prioritne zariadenie.
+
+4. Ak sa mi podari bootnut USB, pokracujem podla pokynov.
+
+5. Pokracujem v instalacii POP
+   POP som instaloval na separatny disk. Na SSD 128 GB mam Windows 10, na 500 GB mam particiu s POP. Pri instalacii som vytvoril 3 particie, 
+   EFI (1048MiB), SWAP(8196MB), ROOT (ZVYSOK). Ako presne to nastavit pre konkretnu instalaciu Linuxu si pozriet na youtube napr.
+   To znamena, ze mam dve EFI zlozky. Jednu ma Windiws na 128 GB SSD, druhu ma POP na 500 GB SSD. Mozem si teda vyberat, z ktorej chcem bootovat.
+   Nasledne cez F11 sa dostavam do Bootovacieho menu BIOSu, kde si volim z coho chcem bootovat, ci z 128 GB SSD (Windows) alebo 500 GB (Linux).
+
+6. Pred restartovanim PC po instalacii musim vybrat USB, pri prvom restarte znova ist do BIOSu(del) a znova vratit boot prioritu ako ma byt: 
+	Fixed Boot priority - Boot option #1  Hard Disk
+                              Boot option #2  USB Hard Disk
+
+
+7. Nasledne si vyberam system cez F11, tym ze mam dve bootovacie EFI particie, staci zvolit ktoru chcem bootnut.
+
+8. Defaultny disk z ktoreho sa bude bootovat si mozem zvolit v BIOSe, je to moznost UEFI Hard Disk Drve Priorities, (obr. 4,5)
+   nachadza sa pod Fixed Boot Order Priorities :
+	UEFI Hard Disk Drive Priorities
+	Ako prvu moznost dat disk z ktoreho chceme bootovat defaultne : SAMSUNG 500 GB	
+	Ako druhu moznost dat disk z ktoreho chceme bootovat druhorado: KINGSTON 128 GB	
+
+Prve kroky po instalacii :
+
+1. sudo ufw enable
+
+2. sudo apt install msi-keyboard
+
+3. sudo apt install tlp-rdw
+
+6. sudo apt install lm-sensors
+   sudo sensors-detect
+   sudo apt install psensor
+   
+7. nainstaloval Gnome extension cpufreq
+
+8. nainstalovat undervolt a spustit service pre undervolt - https://github.com/georgewhewell/undervolt
+
+9. nastavit startup service pre keyboard led off (samostatny navod)
+
+10. nainstalovat isw (samostatny navod) - momentalne nepovolujem ec_write a isw pouzivam len na monitorovanie RPM ventilatorov
+
+11. nakopirovat do ~ zalohovane .gitconfig, .bashrc, .bash_aliases, .config/wezterm, .config/nvim
+
+
+   vlozit a ulozit: alias kb_off="msi-keyboard -c left,off,low -c middle,off,low -c right,off,low"
+   do bashu : source ~/.bashrc

@@ -1,0 +1,92 @@
+First, we need to check which versions of CUDA and CUDNN are supported by tensorflow.
+We cam check it on site:  https://www.tensorflow.org/install/source#gpu
+
+In October 2022, Tensorflow supports only CUDA 11.2 and CUDNN 8.1 -> so we need to install these versions.
+
+I have combined 2 articles together:
+	https://askubuntu.com/a/1288405
+	https://yakhyo.medium.com/cuda-11-2-installation-on-ubuntu-20-04-e83f7561ccc1
+
+From first'askubuntu' I took step with installing NVIDIA driver as standalone and not with CUDA included one.
+But the version of CUDA he is installing is newer, so we need to know which driver do we need for CUDA 11.2 
+Exactly that information is in second article, where he is installing CUDA 11.2 but with another steps.
+So I took version info's and proceed with steps in 'askubuntu' answer. When NVIDIA Driver is sucesfully 
+instaled, I proceed with installation of CUDA with version described in 'yakhyo'.
+Installation of CUDNN is then done by steps in 'yakhyo' article. So, the exact steps which I did are:
+
+
+
+- sudo apt-get purge nvidia*     		// remove previous nvidia drivers
+- sudo apt-get autoremove  			
+- sudo apt install nvidia-driver-460		// install driver with correct version for CUDA 11.2
+
+Now, we have installed correct NVIDIA driver for CUDA 11.2 (as it is described in 'yakhyo' link).
+Next step will be to install CUDA 11.2 .
+
+- wget https://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/cuda_11.2.0_460.27.04_linux.run 
+- sudo sh cuda_11.2.0_460.27.04_linux.run
+
+If you get the following, just choose Continue: (we have installed driver because we want separate driver from the one
+included in CUDA installation file).
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ Existing package manager installation of the driver found. It is strongly    │
+│ recommended that you remove this before continuing.                          │
+│ Abort                                                                        │
+│ Continue                                                                     │
+│                                                                             
+
+Accept the EULA.
+
+Unselect the video driver by pressing the spacebar while [X] Driver is highlighted:
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ CUDA Installer                                                               │
+│ - [ ] Driver                                                                 │
+│      [ ] 460.29.05                                                           │
+│ + [X] CUDA Toolkit 11.2                                                      │
+│   [X] CUDA Samples 11.2                                                      │
+│   [X] CUDA Demo Suite 11.2                                                   │
+│   [X] CUDA Documentation 11.2                                                │
+│   Options                                                                    │
+│   Install                                                                    │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│ Up/Down: Move | Left/Right: Expand | 'Enter': Select | 'A': Advanced options │
+
+Then press the down arrow to Install. Press Enter then wait for installation to complete.
+
+After the installation is complete add the following to the bottom of your ~/.profile or add it to the /etc/profile.d/cuda.sh file which you might have to create for all users (global):
+
+# set PATH for cuda 11.2 installation
+if [ -d "/usr/local/cuda-11.2/bin/" ]; then
+    export PATH=/usr/local/cuda-11.2/bin${PATH:+:${PATH}}
+    export LD_LIBRARY_PATH=/usr/local/cuda-11.2/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+fi
+
+Next, we need to download correct version of CUDNN, which is 8.1 for CUDA 11.2.
+Go to site https://developer.nvidia.com/cudnn and download correct version (select Linux x86_64 TAR file).
+Then:
+
+- tar -xzvf cudnn-11.2-linux-x64-v8.1.0.53.tgz
+- sudo cp cuda/include/cudnn*.h /usr/local/cuda-11.2/include
+- sudo cp cuda/lib64/libcudnn* /usr/local/cuda-11.2/lib64
+- sudo chmod a+r /usr/local/cuda-11.2/include/cudnn*.h /usr/local/cuda-11.2/lib64/libcudnn*
+
+I recommend now to reboot the system for the changes to take effect.
+
+
+ALL MINOR VERSION NUMBERS IN THIS FILE ARE NOT REAL, ONLY MAJOR VERSION ARE CORRECT!
+
+

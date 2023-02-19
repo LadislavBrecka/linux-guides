@@ -1,0 +1,22 @@
+git clone https://github.com/YoyPa/isw
+
+cd isw
+
+cp etc/isw.conf /etc/isw.conf
+sudo cp etc/isw.conf /etc/isw.conf
+sudo cp etc/modprobe.d/isw-ec_sys.conf /etc/modprobe.d/isw-ec_sys.conf
+sudo cp etc/modules-load.d/isw-ec_sys.conf /etc/modules-load.d/isw-ec_sys.conf
+sudo cp usr/lib/systemd/system/isw@.service /usr/lib/systemd/system/isw@.service
+sudo cp isw /usr/bin/isw
+
+sudo modprobe ec_sys write_support=1
+
+systemctl enable isw@16P6EMS1.service
+systemctl start isw@16P6EMS1.service
+
+Poznamky: 
+	- moj config pre zakladovu dosku je 16P6EMS1, viem si to dohladat v isw.conf
+	- sudo isw -r  (zobrazi otacky ventilatorov)
+	- v configu pre moju zakladovku 16P6EMS1 som si zmenil otacky ventilatora pre grafiku
+	  v prvom stupni, tj pri 55C som zmenil otacky z 53% na 40%
+	- isw -w 16P6EMS1

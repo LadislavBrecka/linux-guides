@@ -1,0 +1,36 @@
+1. Create script you want to run on startup.
+
+    For example file 'startup-scripts.sh' (can be found in scripts folder):
+    	
+    	#!/bin/bash
+
+	# turn of the keyboard
+	/bin/msi-keyboard -m normal -c left,off,low -m normal -c middle,off,low -m normal -c right,off,low
+	
+2. cd /etc/systemd/system
+
+3. sudo gedit 'name_of_service.service' (for example 'custom-startup.service')
+
+4. Put following lines and edit according to location of your script you want to run
+
+	[Unit]
+	Description=custom-startup
+	After=suspend.target
+	After=hibernate.target
+	After=hybrid-sleep.target
+
+	[Service]
+	Type=oneshot
+	ExecStart=/home/ladislav/startup-scripts.sh
+
+	[Install]
+	WantedBy=multi-user.target
+	WantedBy=suspend.target
+	WantedBy=hibernate.target
+	WantedBy=hybrid-sleep.target
+
+5. Save
+
+6. sudo systemctl enable 'name_of_service' (for example -> sudo systemctl enable custom-startup)
+
+7. sudo systemctl start 'name_of_service'

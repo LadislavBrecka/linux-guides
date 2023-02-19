@@ -1,0 +1,11 @@
+If msi-keyboard is installed, than turning all LEDs of is done with:
+	msi-keyboard -m normal -c left,off,low -c middle,off,low -c right,off,low
+
+If undervolt is installed, we can load ThrottleStop config by:
+	sudo undervolt --throttlestop /home/satori/Laco/ThrottleStop.ini
+
+Pop OS all-in update replacing need for opening software center: 
+	sudo apt update && sudo apt list --upgradable && sudo apt full-upgrade && sudo apt autoremove && flatpak update
+
+Find which process is running on port e.g 8080:
+	lsof -i TCP:8080
